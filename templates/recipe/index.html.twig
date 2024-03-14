@@ -5,12 +5,13 @@
 {% block body %}
 lorem ipsum dolor sit amet, consectetur adipisicing elit. 
 
-{% for recette in Recettes %}
-{# This is a comment 
-    <h2>{{ recette.titre }}</h2>
-    <p>{{ recette.description }}</p>
-    #}
-    <a href="{{ path('recette_show', {'id': recette.id}) }}">voir la recette</a>
+{% for recette in recipes %}
+{# This is a comment    #}
+    <h2>{{ recette.title }}</h2>
+    <p>{{ recette.slug }}</p>
+    <p>{{ recette.content }}</p>
+    <p>{{ recette.duration }}</p>
+<a href="{{ path('recipe.show', {'slug': recette.slug, 'id': recette.id}) }}">voir la recette</a>
 {% endfor %}
 
 {% endblock %}

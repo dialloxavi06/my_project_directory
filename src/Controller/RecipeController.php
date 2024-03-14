@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\RecipeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,26 +13,32 @@ class RecipeController extends AbstractController
 
     
     #[Route('/recette', name: 'recipe.index')]
-    public function index( Request $request): Response
+    public function index( Request $request, RecipeRepository $repository ): Response
     {
-        return $this->render('recipe/index.html.twig');
+        $recipes = $repository->findAll();
+
+        return $this->render('recipe/index.html.twig', [
+            'recipes' => $recipes
+        ]);
     
       
     }
 
-    #[Route('/recette/{slug}-{id}', name: 'recipe.show')]
-    public function show( Request $request, string $slug, int $id): Response
+    #[Route('/recette/{slug}-{id}', name: 'recipe.show', requirements: ['slug' => '[^/]+'])]
+    public function show( Request $request, string $slug, int $id, RecipeRepository $repository): Response
     {
+        $recipe = $repository->find($id);
+        if($recipe->getSlug() !== $slug){
+            return $this->redirectToRoute('recipe.show', [
+                'id' => $recipe->getId(),
+                'slug' => $recipe->getSlug()
+            ], 301);
+        }
      
 
         return $this->render('recipe/show.html.twig', [
-            'slug' => $slug,
-            'id' => $id,
-            'Recettes' => [
-                'Recette 1' => 'Pates bolognaise',
-                'Recette 2' => 'Poulet curry',
-                'Recette 3' => 'Tarte aux pommes'
-            ]
+            'recipe' => $recipe
+            
         ]);
       
     }

@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}toutes les recettes{% endblock %}
+{% block title %}{{recipe.title}}{% endblock %}
 
 {% block body %}
-lorem ipsum dolor sit amet, consectetur adipisicing elit.
 
-<h1>toutes les recettes</h1>
+<h1>{{recipe.id}}</h1>
+<h2>{{recipe.title}}</h2>
+<p>{{recipe.content  |nl2br}}</p>
 
-{{slug}}
+
 
 {% endblock %}
  
