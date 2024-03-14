@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}toutes les recettes{% endblock %}
+
+{% block body %}
+lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+
+{% for recette in Recettes %}
+{# This is a comment 
+    <h2>{{ recette.titre }}</h2>
+    <p>{{ recette.description }}</p>
+    #}
+    <a href="{{ path('recette_show', {'id': recette.id}) }}">voir la recette</a>
+{% endfor %}
+
+{% endblock %}
+ 
