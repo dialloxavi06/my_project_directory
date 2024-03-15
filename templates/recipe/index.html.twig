@@ -4,15 +4,35 @@
 
 {% block body %}
 lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+<a href="{{ path('recipe.create') }}">créer</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Slug</th>
+            <th>Contenu</th>
+            <th>Durée</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for recette in recipes %}
+        <tr>
+            <td>{{ recette.title }}</td>
+            <td>{{ recette.slug }}</td>
+            <td>{{ recette.content }}</td>
+            <td>{{ recette.duration }}</td>
+            <td>
+                <a href="{{ path('recipe.show', {'slug': recette.slug, 'id': recette.id}) }}">voir</a>
+                <a href="{{ path('recipe.edit', {'id': recette.id}) }}">Modifier</a>
+                <a href="{{ path('recipe.delete', {'id': recette.id}) }}">Supprimer</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-{% for recette in recipes %}
-{# This is a comment    #}
-    <h2>{{ recette.title }}</h2>
-    <p>{{ recette.slug }}</p>
-    <p>{{ recette.content }}</p>
-    <p>{{ recette.duration }}</p>
-<a href="{{ path('recipe.show', {'slug': recette.slug, 'id': recette.id}) }}">voir la recette</a>
-{% endfor %}
+
 
 {% endblock %}
  
