@@ -14,18 +14,18 @@
 <body>
 <nav class="navbar bg-primary navbar-expand-lg" data-bs-theme="dark">
 <div class="container-fluid">
-    <a class="navbar-brand" href="{{ path('app_home') }}" >Mon site</a>
+    <a class="navbar-brand" href="{{ path('home') }}" >Mon site</a>
     <ul class="nav">
         <li class="nav-item">
             <li class="nav-item">
-                <a class="nav-link {{app.current_route == 'app_home' ? 'active' : ''}}" href="{{ path('app_home') }}">Home</a>
+                <a class="nav-link {{app.current_route == 'home' ? 'active' : ''}}" href="{{ path('home') }}">Home</a>
             </li>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href = "{{url('recipe.index')}}">Recettes</a>
+        <a class="nav-link" href="{{ path('admin.recipe.index') }}">Recettes</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" >Contact</a>
+            <a class="nav-link" href = "{{url('contact')}}">Contact</a>
         </li>
     </ul>
 </div>
