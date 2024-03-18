@@ -1,37 +1,43 @@
-{% extends 'admin/admin.html.twig' %}
-{% block title %}toutes les recettes{% endblock %}
+    {% extends 'admin/admin.html.twig' %}
+    {% block title %}toutes les recettes{% endblock %}
 
-{% block body %}
-lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-<a href="{{ path('recipe.create') }}">créer</a>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Titre</th>
-            <th>Slug</th>
-            <th>Contenu</th>
-            <th>Durée</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for recette in recipes %}
-        <tr>
-            <td>{{ recette.title }}</td>
-            <td>{{ recette.slug }}</td>
-            <td>{{ recette.content }}</td>
-            <td>{{ recette.duration }}</td>
-            <td>
-                {# <a href="{{ path('recipe.show', {'slug': recette.slug, 'id': recette.id}) }}">voir</a> #}
-                <a href="{{ path('admin.recipe.edit', {'id': recette.id}) }}">Modifier</a>
-                <a href="{{ path('admin.recipe.delete', {'id': recette.id}) }}">Supprimer</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    {% block body %}
+    lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+    <a href="{{ path('admin.recipe.create') }}" class="btn btn-primary mb-2">créer</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Slug</th>
+                <th>Contenu</th>
+                <th>Durée</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for recette in recipes %}
+            <tr>
+                <td>{{ recette.title }}</td>
+                <td>{{ recette.slug }}</td>
+                <td>{{ recette.content }}</td>
+                <td>{{ recette.duration }}</td>
+                <td>{{ recette.category.name |default('') }}</td>
+                <td>
+                    {# <a href="{{ path('recipe.show', {'slug': recette.slug, 'id': recette.id}) }}">voir</a> #}
+                    <a href="{{ path('admin.recipe.edit', {'id': recette.id}) }}" class="btn btn-primary mb-2">Modifier</a>
+                    <form action="{{ path('admin.recipe.delete', {'id': recette.id}) }}" method="POST">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </form>
 
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-
-{% endblock %}
  
+
+    {% endblock %}
+    

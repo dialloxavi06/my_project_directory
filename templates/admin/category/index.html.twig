@@ -1,0 +1,36 @@
+    {% extends 'admin/admin.html.twig' %}
+    {% block title %}Category{% endblock %}
+
+    {% block body %}
+    lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+<button class="btn btn-primary" onclick="window.location.href='{{ path('admin.category.create') }}'">Créer</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                <td>{{ category.name }}</td>
+
+                <td>
+                    {# <a href="{{ path('recipe.show', {'slug': recette.slug, 'id': recette.id}) }}">voir</a> #}
+                    <a href="{{ path('admin.category.edit', {'id': category.id}) }}"class="btn btn-primary mb-2">Modifier</a>
+                    <form action="{{ path('admin.category.delete', {'id': category.id}) }}" method="post">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit">Supprimer</button>
+                    </form>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+    {% endblock %}
+    

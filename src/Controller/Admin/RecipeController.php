@@ -10,14 +10,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Recipe;
 use App\Form\RecipeType;
+use App\Repository\CategoryRepository;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 #[Route('/admin/recettes', name: 'admin.recipe.')]
 class RecipeController extends AbstractController
-{
+{ 
 
     #[Route('/', name: 'index')]
-    public function index(RecipeRepository $repository): Response
+    public function index(RecipeRepository $repository, EntityManagerInterface $em, CategoryRepository $categoryRepository): Response
     {
+    
         $recipes = $repository->findAll();
 
         return $this->render('admin/recipe/index.html.twig', [
@@ -48,32 +51,31 @@ class RecipeController extends AbstractController
     {
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+           
             $this->addFlash('success', 'La recette a bien été modifiée');
-            $em->persist($recipe);          
+            $em->persist($recipe);
             $em->flush();
-            return $this->redirectToRoute('admin.recipe.index', [
-                'recipe' => $recipe,
-                'form' => $form,
-            ]);
-
+    
+            return $this->redirectToRoute('admin.recipe.index');
         }
-
-
+    
         return $this->render('admin/recipe/edit.html.twig', [
             'recipe' => $recipe,
-            'form' => $form->createView(), 
+            'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/{id}', name: 'delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
-    public function delete(Recipe $recipe, EntityManagerInterface $em)
-    {
-        $em->remove($recipe);
-        $em->flush();
-        $this->addFlash('success', 'La recette a bien été supprimée');
-        return $this->redirectToRoute('admin.recipe.index');
-    }
+    #[Route('/delete/{id}', name: 'delete',  methods: ['GET', 'POST'])]
+public function delete(Recipe $recipe, EntityManagerInterface $em): Response
+{
+    $em->remove($recipe);
+    $em->flush();
+    $this->addFlash('success', 'La recette a bien été supprimée');
+    return $this->redirectToRoute('admin.recipe.index');
+}
+
 
     #[Route('/create', name: 'create', methods: ['GET', 'POST'])]
 
@@ -82,7 +84,7 @@ class RecipeController extends AbstractController
         $recipe = new Recipe();
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted() && $form->isValid()){ 
             $em->persist($recipe);
             $em->flush();
             $this->addFlash('success', 'La recette a bien été créée');
